@@ -1,19 +1,14 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
+import './types/express';
 import cors from 'cors';
 import http from 'http';
 import * as socketIO from 'socket.io';
 import dbConnection from './config/db';
 import userRoutes from './router/userRoute';
 import messageRoutes from './router/messageRoute';
-import { CustomRequest } from './types/conec'
 
 
-declare module 'express-serve-static-core' {
-    interface Request {
-    con: Connection;
-    io:  Server;
-   files:any
-}}
+
 
 const PORT = process.env.PORT || 8080;
 const { API_VERSION, API_NAME } = process.env;
@@ -39,8 +34,8 @@ app.use(express.static('src/upload'));
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
 
-    (req as CustomRequest).io = io;
-    (req as CustomRequest).con = dbConnection;
+    req.io = io;
+    req.con = dbConnection;
     next();
 })
 app.post('/api/v1/users/logi', (_req, _res) => {

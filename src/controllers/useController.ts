@@ -2,16 +2,13 @@ import UserModel from '../models/userModel';
 import { getFilePath, unlinkFile } from '../utils/auth';
 import { compare } from 'bcryptjs';
 import { createAccessToken, createRefreshToken } from '../utils/jwt';
-import { Response } from 'express';
-import { Connection } from "mysql";
-import  {Server} from 'socket.io';
-
+import { Request, Response } from 'express';
 import { CustomRequest } from '../types/conec'
+
 
 const UserController = {
 
-
-    index({ req, res }: { req: CustomRequest; res: Response }) {
+    index({ req, res }: { req:Request ; res: Response }) {
         UserModel.get(req.con, (error: any, rows: any) => {
             if (error) {
                 res.status(500).send({ response: "Ha ocurrido un error listando los usuarios" });
@@ -33,7 +30,7 @@ const UserController = {
 
         });
     },
-    login: ({ req, res }: { req: CustomRequest; res: Response }) => {
+    login: ({ req, res }: { req: Request; res: Response }) => {
        
         const { email, password } = req.body;
 
